@@ -1,6 +1,7 @@
 package me.justahuman.xaeropluginclaims.mixin.worldmap;
 
 import me.justahuman.xaeropluginclaims.claim.ClaimManager;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -21,12 +22,12 @@ public class SupportModsMixin {
     public void load(CallbackInfo ci) {
         ClaimManager.onClaimAdded(claim -> updateChunks(claim.worldKey(), claim.chunks()));
         ClaimManager.onClaimRemoved(claim -> updateChunks(claim.worldKey(), claim.chunks()));
-        ClaimManager.onWorldChanged(worldKey -> {
+        ClaimManager.onWorldChanged(world -> {
             WorldMapSession session = WorldMapSession.getCurrentSession();
-            if (session == null || session.getMapProcessor() == null) {
+            if (session == null || session.getMapProcessor() == null || MinecraftClient.getInstance().world == null) {
                 return;
             }
-            MapDimension mapDim = session.getMapProcessor().getMapWorld().getDimension(worldKey);
+            MapDimension mapDim = session.getMapProcessor().getMapWorld().getDimension(MinecraftClient.getInstance().world.getRegistryKey());
             if (mapDim != null) {
                 mapDim.getHighlightHandler().clearCachedHashes();
             }

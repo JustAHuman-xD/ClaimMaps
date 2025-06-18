@@ -8,7 +8,7 @@
     "minimap.SupportModsMixin",
     "worldmap.SupportModsMixin",
     "worldmap.WorldMapSessionMixin",
-    "MinecraftClientMixin"
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
