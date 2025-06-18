@@ -24,6 +24,7 @@ public class WorldmapClaimHighlighter extends ChunkHighlighter implements ClaimH
         super(true);
     }
 
+    @Override
     public int calculateRegionHash(RegistryKey<World> worldKey, int regionX, int regionZ) {
         if (!WorldMap.settings.displayClaims || !ClaimManager.hasClaimRegion(worldKey, regionX, regionZ)) {
             return 0;

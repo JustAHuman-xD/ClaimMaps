@@ -2,6 +2,7 @@ package me.justahuman.xaeropluginclaims.claim;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -13,7 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 public record Claim(long id, UUID owner, String customName, RegistryKey<World> worldKey, List<ChunkPos> chunks, int color) {
-    public void serialize(ByteArrayDataOutput output) {
+    public byte[] serialize() {
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeLong(id);
         output.writeLong(owner == null ? -1 : owner.getMostSignificantBits());
         output.writeLong(owner == null ? -1 : owner.getLeastSignificantBits());
@@ -25,6 +27,11 @@ public record Claim(long id, UUID owner, String customName, RegistryKey<World> w
             output.writeInt(chunk.z);
         }
         output.writeInt(color);
+        return output.toByteArray();
+    }
+
+    public static Claim deserialize(byte[] data) {
+        return deserialize(ByteStreams.newDataInput(data));
     }
 
     public static Claim deserialize(ByteArrayDataInput input) {

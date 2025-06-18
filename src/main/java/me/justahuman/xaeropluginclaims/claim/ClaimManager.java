@@ -9,47 +9,42 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public class ClaimManager {
     private static final Map<UUID, String> OWNER_CACHE = new HashMap<>();
     private static final Map<RegistryKey<World>, Map<Long, Claim>> CLAIM_BY_ID = new HashMap<>();
-    private static final Map<RegistryKey<World>, Map<Long, Map<ChunkPos, Claim>>> CLAIMS = new HashMap<>();
+    private static final Map<RegistryKey<World>, Map<Long, Map<ChunkPos, Claim>>> CLAIM_BY_CHUNK = new HashMap<>();
+    private static final Map<RegistryKey<World>, Set<Long>> DELETED_CLAIMS = new HashMap<>();
     private static String currentWorldId = null;
-    private static String currentDimensionId = null;
-    private static RegistryKey<World> currentWorldKey = null;
     private static Consumer<Claim> onClaimAdded = claim -> {};
     private static Consumer<Claim> onClaimRemoved = claim -> {};
-    private static Consumer<RegistryKey<World>> onWorldChanged = worldKey -> {
-        ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
-        if (worldKey == null || handler == null) {
-            if (currentWorldId != null && currentDimensionId != null && currentWorldKey != null) {
-                ClaimSerialization.serializeClaims(currentWorldId, currentDimensionId, CLAIMS.getOrDefault(currentWorldKey, new HashMap<>()));
+    private static Consumer<ClientPlayNetworkHandler> onWorldChanged = world -> {
+        if (world == null) {
+            if (currentWorldId != null) {
+                ClaimSerialization.serializeClaims(currentWorldId, CLAIM_BY_ID, DELETED_CLAIMS);
             }
             currentWorldId = null;
-            currentDimensionId = null;
-            currentWorldKey = null;
-            CLAIMS.clear();
+            CLAIM_BY_ID.clear();
+            CLAIM_BY_CHUNK.clear();
+            DELETED_CLAIMS.clear();
             return;
         }
 
         String oldWorldId = currentWorldId;
-        String oldDimensionId = currentDimensionId;
-        RegistryKey<World> oldWorldKey = currentWorldKey;
-        currentWorldId = XaeroPluginClaims.getWorldId(handler);
-        currentDimensionId = XaeroPluginClaims.getDimensionId(worldKey);
-        currentWorldKey = worldKey;
+        currentWorldId = XaeroPluginClaims.getWorldId(world);
         if (!currentWorldId.equals(oldWorldId)) {
-            if (oldWorldId != null && oldDimensionId != null && oldWorldKey != null) {
-                ClaimSerialization.serializeClaims(oldWorldId, oldDimensionId, CLAIMS.getOrDefault(oldWorldKey, new HashMap<>()));
+            if (oldWorldId != null) {
+                ClaimSerialization.serializeClaims(oldWorldId, CLAIM_BY_ID, DELETED_CLAIMS);
             }
-            CLAIMS.clear();
-            ClaimSerialization.deserializeClaims(currentWorldId, currentDimensionId);
-        } else if (!Objects.equals(currentDimensionId, oldDimensionId)) {
-            ClaimSerialization.deserializeClaims(currentWorldId, currentDimensionId);
+            CLAIM_BY_ID.clear();
+            CLAIM_BY_CHUNK.clear();
+            DELETED_CLAIMS.clear();
+            ClaimSerialization.deserializeClaims(currentWorldId);
         }
     };
 
@@ -72,7 +67,7 @@ public class ClaimManager {
     }
 
     public static boolean hasClaimRegion(RegistryKey<World> worldKey, int regionX, int regionZ) {
-        Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIMS.get(worldKey);
+        Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIM_BY_CHUNK.get(worldKey);
         if (worldClaims == null) {
             return false;
         }
@@ -89,7 +84,7 @@ public class ClaimManager {
     }
 
     public static Claim getClaim(RegistryKey<World> worldKey, ChunkPos chunk) {
-        Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIMS.get(worldKey);
+        Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIM_BY_CHUNK.get(worldKey);
         if (worldClaims != null) {
             Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ()));
             return claimsInRegion != null ? claimsInRegion.get(chunk) : null;
@@ -100,9 +95,10 @@ public class ClaimManager {
     public static void addClaim(Claim claim) {
         deleteClaim(claim.worldKey(), claim.id());
         CLAIM_BY_ID.computeIfAbsent(claim.worldKey(), k -> new HashMap<>()).put(claim.id(), claim);
+        DELETED_CLAIMS.computeIfAbsent(claim.worldKey(), k -> new HashSet<>()).remove(claim.id());
         for (ChunkPos chunk : claim.chunks()) {
             long region = XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
-            CLAIMS.computeIfAbsent(claim.worldKey(), k -> new HashMap<>())
+            CLAIM_BY_CHUNK.computeIfAbsent(claim.worldKey(), k -> new HashMap<>())
                     .computeIfAbsent(region, k -> new HashMap<>())
                     .put(chunk, claim);
         }
@@ -110,6 +106,7 @@ public class ClaimManager {
     }
 
     public static void deleteClaim(RegistryKey<World> worldKey, long id) {
+        DELETED_CLAIMS.computeIfAbsent(worldKey, k -> new HashSet<>()).add(id);
         Map<Long, Claim> claimsById = CLAIM_BY_ID.get(worldKey);
         if (claimsById == null) {
             return;
@@ -120,7 +117,7 @@ public class ClaimManager {
         }
         for (ChunkPos chunk : claim.chunks()) {
             long region = XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
-            Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIMS.get(worldKey);
+            Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIM_BY_CHUNK.get(worldKey);
             if (worldClaims != null) {
                 Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(region);
                 if (claimsInRegion != null) {
@@ -131,8 +128,8 @@ public class ClaimManager {
         onClaimRemoved.accept(claim);
     }
 
-    public static void acceptWorldChanged(RegistryKey<World> worldKey) {
-        onWorldChanged.accept(worldKey);
+    public static void acceptWorldChanged(ClientPlayNetworkHandler world) {
+        onWorldChanged.accept(world);
     }
 
     public static void onClaimAdded(Consumer<Claim> consumer) {
@@ -143,7 +140,7 @@ public class ClaimManager {
         onClaimRemoved = onClaimRemoved.andThen(consumer);
     }
 
-    public static void onWorldChanged(Consumer<RegistryKey<World>> consumer) {
+    public static void onWorldChanged(Consumer<ClientPlayNetworkHandler> consumer) {
         onWorldChanged = onWorldChanged.andThen(consumer);
     }
 }

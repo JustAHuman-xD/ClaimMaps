@@ -21,7 +21,7 @@ public class SupportModsMixin {
     public void init(IXaeroMinimap modMain, CallbackInfo ci) {
         ClaimManager.onClaimAdded(claim -> updateChunks(claim.chunks()));
         ClaimManager.onClaimRemoved(claim -> updateChunks(claim.chunks()));
-        ClaimManager.onWorldChanged(worldKey -> {
+        ClaimManager.onWorldChanged(world -> {
             XaeroMinimapSession minimapSession = XaeroMinimapSession.getCurrentSession();
             if (minimapSession == null || minimapSession.getMinimapProcessor() == null) {
                 return;
