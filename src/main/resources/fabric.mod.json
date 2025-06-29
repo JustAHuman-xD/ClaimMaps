@@ -4,8 +4,21 @@
   "version": "${version}",
   "name": "${mod_name}",
   "description": "${mod_description}",
-  "authors": [],
-  "contact": {},
+  "authors": ["JustAHuman"],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/plugin-claims",
+    "sources": "https://github.com/JustAHuman-xD/PluginClaims",
+    "issues": "https://github.com/JustAHuman-xD/PluginClaims/issues",
+    "discord": "https://discord.gg/y6fV6pbgHB"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/y6fV6pbgHB"
+      },
+      "update_checker": true
+    }
+  },
   "license": "GPL-3.0",
   "icon": "assets/${mod_id}/icon.png",
   "environment": "client",

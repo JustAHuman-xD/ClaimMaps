@@ -1,0 +1,17 @@
+{
+  "gui.xaero_wm_pac_claims" : "Display Chunk Claims",
+  "gui.xaero_wm_box_pac_claims" : "Display chunk claims as a colored overlay.",
+  "gui.xaero_wm_pac_claims_border_opacity" : "Chunk Claims Border Opacity",
+  "gui.xaero_wm_box_pac_claims_border_opacity" : "The opacity of the chunk claims overlay border color.",
+  "gui.xaero_wm_pac_claims_fill_opacity" : "Chunk Claims Fill Opacity",
+  "gui.xaero_wm_box_pac_claims_fill_opacity" : "The opacity of the chunk claims overlay fill color.",
+
+  "gui.xaero_pac_claims" : "Display Chunk Claims",
+  "gui.xaero_box_pac_claims" : "Display chunk claims as a colored overlay.",
+  "gui.xaero_pac_claims_border_opacity" : "Chunk Claims Border Opacity",
+  "gui.xaero_box_pac_claims_border_opacity" : "The opacity of the chunk claims overlay border color.",
+  "gui.xaero_pac_claims_fill_opacity" : "Chunk Claims Fill Opacity",
+  "gui.xaero_box_pac_claims_fill_opacity" : "The opacity of the chunk claims overlay fill color.",
+  "gui.xaero_pac_current_claim" : "Display Current Claim",
+  "gui.xaero_box_pac_current_claim" : "Display claim information about the chunk that you are in."
+}
