@@ -1,7 +1,7 @@
-package me.justahuman.xaeropluginclaims.mixin.minimap;
+package me.justahuman.pluginclaims.mixin.xaero.minimap;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import me.justahuman.xaeropluginclaims.xaero.minimap.MinimapClaimHighlighter;
+import me.justahuman.pluginclaims.maps.xaero.minimap.MinimapClaimHighlighter;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

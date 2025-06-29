@@ -1,10 +1,11 @@
-package me.justahuman.xaeropluginclaims;
+package me.justahuman.pluginclaims;
 
 import com.mojang.logging.LogUtils;
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
-import me.justahuman.xaeropluginclaims.payload.ClaimPayload;
-import me.justahuman.xaeropluginclaims.payload.DeleteClaimPayload;
-import me.justahuman.xaeropluginclaims.payload.Payloads;
+import me.justahuman.pluginclaims.claim.ClaimManager;
+import me.justahuman.pluginclaims.payload.ClaimPayload;
+import me.justahuman.pluginclaims.payload.DeleteClaimPayload;
+import me.justahuman.pluginclaims.payload.NoClaimsPayload;
+import me.justahuman.pluginclaims.payload.Payloads;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -19,11 +20,12 @@ import net.minecraft.util.WorldSavePath;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class XaeroPluginClaims implements ClientModInitializer {
-    public static final String MOD_ID = "xaeropluginclaims";
+public class PluginClaims implements ClientModInitializer {
+    public static final String MOD_ID = "pluginclaims";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static Path saveFolder;
 
@@ -31,22 +33,42 @@ public class XaeroPluginClaims implements ClientModInitializer {
     public void onInitializeClient() {
         try {
             Path gameDir = FabricLoader.getInstance().getGameDir().normalize();
-            Path xaeroFolder = gameDir.resolve("xaero");
-            if (!Files.exists(xaeroFolder)) {
-                Files.createDirectories(xaeroFolder);
-            }
-            saveFolder = xaeroFolder.resolve("plugin-claims");
+            saveFolder = gameDir.resolve("plugin-claims");
             if (!Files.exists(saveFolder)) {
+                LOGGER.info("Creating save folder for Plugin Claims at {}", saveFolder);
                 Files.createDirectories(saveFolder);
+
+                Path legacyFolder = gameDir.resolve("xaero").resolve("plugin-claims");
+                if (Files.exists(legacyFolder)) {
+                    LOGGER.info("Migrating legacy claims from {}", legacyFolder);
+                    File[] files = legacyFolder.toFile().listFiles();
+                    if (files != null) {
+                        for (File file : files) {
+                            try {
+                                if (!file.renameTo(saveFolder.resolve(file.getName()).toFile())) {
+                                    LOGGER.warn("Failed to migrate legacy claim file: {}", file.getName());
+                                } else {
+                                    LOGGER.info("Migrated legacy claim file: {}", file.getName());
+                                }
+                            } catch (Exception e) {
+                                LOGGER.error("Failed to migrate legacy claim file: {}", file.getName(), e);
+                            }
+                        }
+                    }
+                } else {
+                    LOGGER.info("No legacy claims found in {}", legacyFolder);
+                }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create save folder(s) for Xaero Plugin Claims", e);
+            throw new RuntimeException("Failed to create save folder for Plugin Claims", e);
         }
 
         PayloadTypeRegistry.playS2C().register(Payloads.CLAIM, ClaimPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(Payloads.NO_CLAIMS, NoClaimsPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(Payloads.DELETE_CLAIM, DeleteClaimPayload.CODEC);
 
         ClientPlayNetworking.registerGlobalReceiver(Payloads.CLAIM, (payload, context) -> ClaimManager.addClaim(payload.claim()));
+        ClientPlayNetworking.registerGlobalReceiver(Payloads.NO_CLAIMS, (payload, context) -> ClaimManager.removeClaims(payload.worldKey(), payload.chunkPos()));
         ClientPlayNetworking.registerGlobalReceiver(Payloads.DELETE_CLAIM, (payload, context) -> ClaimManager.deleteClaim(payload.worldKey(), payload.id()));
     }
 

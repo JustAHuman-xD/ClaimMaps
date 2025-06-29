@@ -1,6 +1,6 @@
-package me.justahuman.xaeropluginclaims.mixin.worldmap;
+package me.justahuman.pluginclaims.mixin.xaero.worldmap;
 
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
+import me.justahuman.pluginclaims.claim.ClaimManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;

@@ -1,10 +1,13 @@
-package me.justahuman.xaeropluginclaims.claim;
+package me.justahuman.pluginclaims.claim;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -50,5 +53,23 @@ public record Claim(long id, UUID owner, String customName, RegistryKey<World> w
         }
         int color = input.readInt();
         return new Claim(id, owner, customName, worldKey, chunks, color);
+    }
+
+    public String display() {
+        StringBuilder name = new StringBuilder("□ ");
+        if (!customName.isEmpty()) {
+            name.append(customName).append(" - ");
+        }
+        name.append(ClaimManager.getOwnerName(owner)).append("'s Claim");
+        return name.toString();
+    }
+
+    public Text displayText() {
+        Text text = Text.literal("□ ").styled((s -> s.withColor(color)));
+        text.getSiblings().add(Text.literal(ClaimManager.getOwnerName(owner) + "'s Claim").formatted(Formatting.WHITE));
+        if (!customName.isEmpty()) {
+            text.getSiblings().add(0, Text.literal(I18n.translate(customName) + " - ").formatted(Formatting.WHITE));
+        }
+        return text;
     }
 }

@@ -1,6 +1,6 @@
-package me.justahuman.xaeropluginclaims.payload;
+package me.justahuman.pluginclaims.payload;
 
-import me.justahuman.xaeropluginclaims.claim.Claim;
+import me.justahuman.pluginclaims.claim.Claim;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;

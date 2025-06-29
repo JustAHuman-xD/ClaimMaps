@@ -1,6 +1,6 @@
-package me.justahuman.xaeropluginclaims.mixin.minimap;
+package me.justahuman.pluginclaims.mixin.xaero.minimap;
 
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
+import me.justahuman.pluginclaims.claim.ClaimManager;
 import net.minecraft.util.math.ChunkPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

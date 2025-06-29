@@ -1,4 +1,4 @@
-package me.justahuman.xaeropluginclaims.claim;
+package me.justahuman.pluginclaims.claim;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;

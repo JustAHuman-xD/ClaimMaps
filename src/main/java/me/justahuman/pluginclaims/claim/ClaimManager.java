@@ -1,7 +1,7 @@
-package me.justahuman.xaeropluginclaims.claim;
+package me.justahuman.pluginclaims.claim;
 
 import com.mojang.authlib.yggdrasil.ProfileResult;
-import me.justahuman.xaeropluginclaims.XaeroPluginClaims;
+import me.justahuman.pluginclaims.PluginClaims;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.registry.RegistryKey;
@@ -36,7 +36,7 @@ public class ClaimManager {
         }
 
         String oldWorldId = currentWorldId;
-        currentWorldId = XaeroPluginClaims.getWorldId(world);
+        currentWorldId = PluginClaims.getWorldId(world);
         if (!currentWorldId.equals(oldWorldId)) {
             if (oldWorldId != null) {
                 ClaimSerialization.serializeClaims(oldWorldId, CLAIM_BY_ID, DELETED_CLAIMS);
@@ -71,7 +71,7 @@ public class ClaimManager {
         if (worldClaims == null) {
             return false;
         }
-        Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(XaeroPluginClaims.pack(regionX, regionZ));
+        Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(PluginClaims.pack(regionX, regionZ));
         return claimsInRegion != null && !claimsInRegion.isEmpty();
     }
 
@@ -86,7 +86,7 @@ public class ClaimManager {
     public static Claim getClaim(RegistryKey<World> worldKey, ChunkPos chunk) {
         Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIM_BY_CHUNK.get(worldKey);
         if (worldClaims != null) {
-            Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ()));
+            Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(PluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ()));
             return claimsInRegion != null ? claimsInRegion.get(chunk) : null;
         }
         return null;
@@ -97,12 +97,24 @@ public class ClaimManager {
         CLAIM_BY_ID.computeIfAbsent(claim.worldKey(), k -> new HashMap<>()).put(claim.id(), claim);
         DELETED_CLAIMS.computeIfAbsent(claim.worldKey(), k -> new HashSet<>()).remove(claim.id());
         for (ChunkPos chunk : claim.chunks()) {
-            long region = XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
+            long region = PluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
             CLAIM_BY_CHUNK.computeIfAbsent(claim.worldKey(), k -> new HashMap<>())
                     .computeIfAbsent(region, k -> new HashMap<>())
                     .put(chunk, claim);
         }
         onClaimAdded.accept(claim);
+    }
+
+    public static void removeClaims(RegistryKey<World> worldKey, ChunkPos chunkPos) {
+        Claim claim = getClaim(worldKey, chunkPos);
+        if (claim == null) {
+            return;
+        }
+        claim.chunks().remove(chunkPos);
+        deleteClaim(worldKey, claim.id());
+        if (!claim.chunks().isEmpty()) {
+            addClaim(claim);
+        }
     }
 
     public static void deleteClaim(RegistryKey<World> worldKey, long id) {
@@ -116,7 +128,7 @@ public class ClaimManager {
             return;
         }
         for (ChunkPos chunk : claim.chunks()) {
-            long region = XaeroPluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
+            long region = PluginClaims.pack(chunk.getRegionX(), chunk.getRegionZ());
             Map<Long, Map<ChunkPos, Claim>> worldClaims = CLAIM_BY_CHUNK.get(worldKey);
             if (worldClaims != null) {
                 Map<ChunkPos, Claim> claimsInRegion = worldClaims.get(region);

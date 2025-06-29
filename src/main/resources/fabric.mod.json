@@ -1,21 +1,24 @@
 {
   "schemaVersion": 1,
-  "id": "xaeropluginclaims",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "XaeroPluginClaims",
-  "description": "A xaero addon adding support for claim plugins such as HuskTowns and GriefPrevention",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [],
   "contact": {},
   "license": "GPL-3.0",
-  "icon": "assets/xaeropluginclaims/icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "me.justahuman.xaeropluginclaims.XaeroPluginClaims"
+      "me.justahuman.pluginclaims.PluginClaims"
+    ],
+    "journeymap": [
+      "me.justahuman.pluginclaims.maps.journeymap.JourneyCompat"
     ]
   },
   "mixins": [
-    "xaeropluginclaims.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
@@ -24,6 +27,7 @@
   },
   "recommends": {
     "xaeroworldmap": "*",
-    "xaerominimap": "*"
+    "xaerominimap": "*",
+    "journeymap": "*"
   }
 }

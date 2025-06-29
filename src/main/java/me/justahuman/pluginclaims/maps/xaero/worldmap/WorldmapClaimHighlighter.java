@@ -1,12 +1,10 @@
-package me.justahuman.xaeropluginclaims.xaero.worldmap;
+package me.justahuman.pluginclaims.maps.xaero.worldmap;
 
-import me.justahuman.xaeropluginclaims.claim.Claim;
-import me.justahuman.xaeropluginclaims.claim.ClaimHighlighter;
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
-import net.minecraft.client.resource.language.I18n;
+import me.justahuman.pluginclaims.claim.Claim;
+import me.justahuman.pluginclaims.claim.ClaimHighlighter;
+import me.justahuman.pluginclaims.claim.ClaimManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import xaero.map.WorldMap;
 import xaero.map.highlight.ChunkHighlighter;
@@ -89,17 +87,11 @@ public class WorldmapClaimHighlighter extends ChunkHighlighter implements ClaimH
             return null;
         }
 
-        String ownerName = ClaimManager.getOwnerName(claim.owner());
         String customName = claim.customName();
         int actualClaimsColor = claim.color();
         int claimsColor = actualClaimsColor | -16777216;
         if (!Objects.equals(claim, this.cachedTooltipFor) || this.cachedForClaimsColor != claimsColor || !Objects.equals(customName, this.cachedForCustomName)) {
-            this.cachedTooltip = Text.literal("□ ").styled((s -> s.withColor(claimsColor)));
-            this.cachedTooltip.getSiblings().add(Text.literal(ownerName + "'s Claim").formatted(Formatting.WHITE));
-            if (!customName.isEmpty()) {
-                this.cachedTooltip.getSiblings().add(0, Text.literal(I18n.translate(customName) + " - ").formatted(Formatting.WHITE));
-            }
-
+            this.cachedTooltip = claim.displayText();
             this.cachedTooltipFor = claim;
             this.cachedForCustomName = customName;
             this.cachedForClaimsColor = claimsColor;
