@@ -6,6 +6,7 @@
   "client": [
     "xaero.minimap.MinimapSessionMixin",
     "xaero.minimap.SupportModsMixin",
+    "xaero.worldmap.ModOptionsMixin",
     "xaero.worldmap.SupportModsMixin",
     "xaero.worldmap.WorldMapSessionMixin",
     "ClientPlayNetworkHandlerMixin"
