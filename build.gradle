@@ -10,7 +10,7 @@ base {
 }
 
 repositories {
-    maven { url = "https://maven.blamejared.com/" }
+    maven { url = "https://jm.gserv.me/repository/maven-snapshots/" }
     exclusiveContent {
         forRepository { maven { url = "https://api.modrinth.com/maven" } }
         filter { includeGroup "maven.modrinth" }
@@ -40,6 +40,7 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
+                "max_minecraft_version": project.max_minecraft_version,
                 "loader_version": project.loader_version,
                 "mod_id": project.mod_id,
                 "mod_name": project.mod_name,

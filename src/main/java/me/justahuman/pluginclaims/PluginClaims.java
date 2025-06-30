@@ -100,7 +100,7 @@ public class PluginClaims implements ClientModInitializer {
         return "Multiplayer_" + serverIP.replace("[", "").replace("]", "").replaceAll(":", ".");
     }
 
-    public static String getDimensionId(RegistryKey<World> worldKey) {
+    public static String getLegacyKey(RegistryKey<World> worldKey) {
         if (worldKey == null) {
             return null;
         } else if (worldKey == World.OVERWORLD) {

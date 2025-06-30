@@ -25,7 +25,7 @@ public class ClaimSerialization {
 
         for (Map.Entry<RegistryKey<World>, Map<Long, Claim>> dimEntry : claims.entrySet()) {
             RegistryKey<World> dimKey = dimEntry.getKey();
-            String dimId = PluginClaims.getDimensionId(dimKey);
+            String dimId = PluginClaims.getLegacyKey(dimKey);
             Path savePath = worldPath.resolve(dimId);
             try {
                 if (!Files.exists(savePath)) {
@@ -52,8 +52,7 @@ public class ClaimSerialization {
 
         for (Map.Entry<RegistryKey<World>, Set<Long>> dimEntry : deletedClaims.entrySet()) {
             RegistryKey<World> dimKey = dimEntry.getKey();
-            String dimId = PluginClaims.getDimensionId(dimKey);
-            Path savedPath = worldPath.resolve(dimId);
+            Path savedPath = worldPath.resolve(dimKey.getValue().toString());
             if (!Files.exists(savedPath)) {
                 continue;
             }
@@ -62,7 +61,7 @@ public class ClaimSerialization {
                 try {
                     Files.deleteIfExists(savedPath.resolve(id + ".claim"));
                 } catch (IOException e) {
-                    PluginClaims.LOGGER.error("Failed to delete claim {}, {} : {}", worldId, dimId, id, e);
+                    PluginClaims.LOGGER.error("Failed to delete claim {}, {} : {}", worldId, dimEntry.getValue(), id, e);
                 }
             }
         }

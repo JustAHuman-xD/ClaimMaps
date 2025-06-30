@@ -11,7 +11,7 @@ public interface ClaimHighlighter {
     int[] resultStore();
 
     default boolean hasHighlights(RegistryKey<World> worldKey, int regionX, int regionZ) {
-        return ClaimManager.hasClaimWorld(worldKey);
+        return ClaimManager.hasClaimRegion(worldKey, regionX, regionZ);
     }
 
     default boolean chunkHighlighted(RegistryKey<World> worldKey, int chunkX, int chunkZ) {
