@@ -10,6 +10,7 @@ base {
 }
 
 repositories {
+    maven { url = "https://jm.gserv.me/repository/maven-snapshots/" }
     exclusiveContent {
         forRepository { maven { url = "https://api.modrinth.com/maven" } }
         filter { includeGroup "maven.modrinth" }
@@ -24,6 +25,8 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "maven.modrinth:xaeros-world-map:${project.worldmap_version}"
     modImplementation "maven.modrinth:xaeros-minimap:${project.minimap_version}"
+    modImplementation "maven.modrinth:journeymap:${project.journeymap_version}"
+    modCompileOnlyApi "info.journeymap:journeymap-api:${project.journeymap_api_version}"
 }
 
 processResources {
@@ -35,7 +38,10 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "mod_id": project.mod_id,
+                "mod_name": project.mod_name,
+                "mod_description": project.mod_description
     }
 }
 

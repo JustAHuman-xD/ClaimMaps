@@ -1,8 +1,8 @@
-package me.justahuman.xaeropluginclaims.xaero.minimap;
+package me.justahuman.pluginclaims.maps.xaero.minimap;
 
-import me.justahuman.xaeropluginclaims.claim.Claim;
-import me.justahuman.xaeropluginclaims.claim.ClaimHighlighter;
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
+import me.justahuman.pluginclaims.claim.Claim;
+import me.justahuman.pluginclaims.claim.ClaimHighlighter;
+import me.justahuman.pluginclaims.claim.ClaimManager;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.MutableText;
@@ -57,19 +57,12 @@ public class MinimapClaimHighlighter extends ChunkHighlighter implements ClaimHi
             return;
         }
 
-        String ownerName = ClaimManager.getOwnerName(claim.owner());
         String customName = claim.customName();
         int actualClaimsColor = claim.color();
         int claimsColor = actualClaimsColor | -16777216;
         if (!Objects.equals(claim, this.cachedTooltipFor) || this.cachedForWidth != width || this.cachedForClaimsColor != claimsColor || !Objects.equals(customName, this.cachedForCustomName)) {
-            MutableText tooltip = Text.literal("□ ").styled(s -> s.withColor(claimsColor));
-            tooltip.getSiblings().add(Text.literal(ownerName + "'s Claim").formatted(Formatting.WHITE));
-            if (!customName.isEmpty()) {
-                tooltip.getSiblings().add(0, Text.literal(I18n.translate(customName) + " - ").formatted(Formatting.WHITE));
-            }
-
             this.cachedTooltip = new ArrayList<>();
-            TextSplitter.splitTextIntoLines(this.cachedTooltip, width, width, tooltip, null);
+            TextSplitter.splitTextIntoLines(this.cachedTooltip, width, width, claim.displayText(), null);
             this.cachedTooltipFor = claim;
             this.cachedForWidth = width;
             this.cachedForCustomName = customName;

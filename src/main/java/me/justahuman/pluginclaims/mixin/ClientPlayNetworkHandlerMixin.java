@@ -1,6 +1,6 @@
-package me.justahuman.xaeropluginclaims.mixin;
+package me.justahuman.pluginclaims.mixin;
 
-import me.justahuman.xaeropluginclaims.claim.ClaimManager;
+import me.justahuman.pluginclaims.claim.ClaimManager;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
