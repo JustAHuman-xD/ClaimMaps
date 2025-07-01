@@ -25,14 +25,14 @@ public class ClaimSerialization {
 
         for (Map.Entry<RegistryKey<World>, Map<Long, Claim>> dimEntry : claims.entrySet()) {
             RegistryKey<World> dimKey = dimEntry.getKey();
-            String dimId = PluginClaims.getLegacyKey(dimKey);
-            Path savePath = worldPath.resolve(dimId);
+            PluginClaims.deleteLegacy(worldId, dimKey);
+            Path savePath = worldPath.resolve(PluginClaims.getDimensionId(dimKey));
             try {
                 if (!Files.exists(savePath)) {
                     Files.createDirectories(savePath);
                 }
             } catch (IOException e) {
-                PluginClaims.LOGGER.error("Failed to create directory for dimension '{}': {}", dimId, e);
+                PluginClaims.LOGGER.error("Failed to create directory for dimension '{}': {}", dimKey.getValue(), e);
                 continue;
             }
             for (Map.Entry<Long, Claim> claimEntry : dimEntry.getValue().entrySet()) {
@@ -45,14 +45,15 @@ public class ClaimSerialization {
                     }
                     Files.write(claimPath, claim.serialize());
                 } catch (IOException e) {
-                    PluginClaims.LOGGER.error("Failed to serialize claim {}, {} : {}", worldId, dimId, claim, e);
+                    PluginClaims.LOGGER.error("Failed to serialize claim {}, {} : {}", worldId, dimKey.getValue(), claim, e);
                 }
             }
         }
 
         for (Map.Entry<RegistryKey<World>, Set<Long>> dimEntry : deletedClaims.entrySet()) {
             RegistryKey<World> dimKey = dimEntry.getKey();
-            Path savedPath = worldPath.resolve(dimKey.getValue().toString());
+            PluginClaims.deleteLegacy(worldId, dimKey);
+            Path savedPath = worldPath.resolve(PluginClaims.getDimensionId(dimKey));
             if (!Files.exists(savedPath)) {
                 continue;
             }
