@@ -8,9 +8,9 @@ import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import xaero.common.IXaeroMinimap;
 import xaero.common.minimap.highlight.ChunkHighlighter;
-import xaero.common.minimap.info.render.compile.InfoDisplayCompiler;
 import xaero.common.misc.TextSplitter;
 import xaero.common.settings.ModSettings;
+import xaero.hud.minimap.info.render.compile.InfoDisplayCompiler;
 
 import java.util.ArrayList;
 import java.util.List;
