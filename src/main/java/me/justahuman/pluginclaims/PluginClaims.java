@@ -100,17 +100,46 @@ public class PluginClaims implements ClientModInitializer {
         return "Multiplayer_" + serverIP.replace("[", "").replace("]", "").replaceAll(":", ".");
     }
 
-    public static String getLegacyKey(RegistryKey<World> worldKey) {
-        if (worldKey == null) {
-            return null;
-        } else if (worldKey == World.OVERWORLD) {
-            return "null";
-        } else if (worldKey == World.NETHER) {
-            return "DIM-1";
-        } else if (worldKey == World.END) {
-            return "DIM1";
-        }
+    public static String getDimensionId(RegistryKey<World> worldKey) {
         return worldKey.getValue().getNamespace() + "$" + worldKey.getValue().getPath().replace('/', '%');
+    }
+
+    public static void deleteLegacy(String worldId, RegistryKey<World> worldKey) {
+        if (worldKey == null) {
+            return;
+        }
+
+        String dimensionId;
+        if (worldKey == World.OVERWORLD) {
+            dimensionId = "null";
+        } else if (worldKey == World.NETHER) {
+            dimensionId = "DIM-1";
+        } else if (worldKey == World.END) {
+            dimensionId = "DIM1";
+        } else {
+            dimensionId = getDimensionId(worldKey);
+        }
+        Path worldPath = saveFolder.resolve(worldId).resolve(dimensionId);
+        try {
+            if (Files.exists(worldPath)) {
+                File[] files = worldPath.toFile().listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.isFile() && file.getName().endsWith(".claim")) {
+                            try {
+                                Files.deleteIfExists(file.toPath());
+                            } catch (Exception e) {
+                                LOGGER.error("Failed to delete legacy claim file: {}", file.getName(), e);
+                            }
+                        }
+                    }
+                }
+                Files.deleteIfExists(worldPath);
+                LOGGER.info("Deleted legacy claims for world {} in dimension {}", worldId, dimensionId);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to try deleting legacy claims for world {}, dimension {}", worldId, dimensionId, e);
+        }
     }
 
     public static long pack(int x, int z) {
