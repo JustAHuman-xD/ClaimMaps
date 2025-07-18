@@ -4,8 +4,6 @@
 ![Version](https://img.shields.io/badge/latest_version-1.0.0-passing)
 ![CommitStatus](https://img.shields.io/github/check-runs/JustAHuman-xD/PluginClaims/1.21-1.21.4?label=latest+commit)
 
-<br>
-
 Plugin Claims is a basic client-sided mod that renders claims from plugin servers on common map mods!<br>
 If your server is running a claims plugin supported by [ClaimMessenger] it will send you claims as join, leave, or travel to them!<br>
 If you are using an unsupported claims plugin, feel free to request support for it on [ClaimMessenger's Issues Page]!
@@ -43,13 +41,13 @@ If you are using an unsupported claims plugin, feel free to request support for 
         <td>25.2.5-6</td>
     </tr>
     <tr>
-        <td><a href="https://modrinth.com/mod/xaeros-world-map">Xaeros World Map</a></td>
+        <td><a href="https://modrinth.com/mod/xaeros-world-map">Xaero's World Map</a></td>
         <td>Supported</td>
         <td>1.39.8+</td>
         <td>1.39.8-9</td>
     </tr>
     <tr>
-        <td><a href="https://modrinth.com/mod/journeymap">Journeymap</a></td>
+        <td><a href="https://modrinth.com/mod/journeymap">JourneyMap</a></td>
         <td>Supported</td>
         <td>6.0.0-beta.27+</td>
         <td>6.0.0-beta.27, 6.0.0-beta.47</td>
@@ -63,4 +61,4 @@ If you are using an unsupported claims plugin, feel free to request support for 
 
 [PluginClaims]: https://github.com/JustAHuman-xD/PluginClaims
 [ClaimMessenger]: https://github.com/JustAHuman-xD/ClaimMessenger
-[ClaimMessenger's Issues Page]: https:github.com/JustAHuman-xD/ClaimMessenger/issues
+[ClaimMessenger's Issues Page]: https://github.com/JustAHuman-xD/ClaimMessenger/issues
