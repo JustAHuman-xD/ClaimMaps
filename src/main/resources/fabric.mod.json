@@ -6,9 +6,9 @@
   "description": "${mod_description}",
   "authors": ["JustAHuman"],
   "contact": {
-    "homepage": "https://modrinth.com/mod/plugin-claims",
-    "sources": "https://github.com/JustAHuman-xD/PluginClaims",
-    "issues": "https://github.com/JustAHuman-xD/PluginClaims/issues",
+    "homepage": "https://modrinth.com/mod/claim-maps",
+    "sources": "https://github.com/JustAHuman-xD/ClaimMaps",
+    "issues": "https://github.com/JustAHuman-xD/ClaimMaps/issues",
     "discord": "https://discord.gg/y6fV6pbgHB"
   },
   "custom": {
@@ -24,10 +24,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "me.justahuman.pluginclaims.PluginClaims"
+      "me.justahuman.claimmaps.ClaimMaps"
     ],
     "journeymap": [
-      "me.justahuman.pluginclaims.maps.journeymap.JourneyCompat"
+      "me.justahuman.claimmaps.maps.journeymap.JourneyCompat"
     ]
   },
   "mixins": [
