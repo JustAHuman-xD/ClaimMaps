@@ -1,6 +1,7 @@
 package me.justahuman.claimmaps.claim;
 
 import me.justahuman.claimmaps.ClaimMaps;
+import me.justahuman.claimmaps.sources.PluginClaims;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
@@ -93,7 +94,7 @@ public class ClaimSerialization {
                 }
 
                 try {
-                    ClaimManager.addClaim(Claim.deserialize(Files.readAllBytes(file)));
+                    PluginClaims.addClaim(Claim.deserialize(Files.readAllBytes(file)));
                 } catch (IOException e) {
                     ClaimMaps.LOGGER.error("Failed to deserialize claim from file {}: {}", file, e);
                 }
