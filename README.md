@@ -7,7 +7,7 @@
 <br>
 
 Claims Maps is a basic client-sided mod that renders a variety of claims on common map mods!<br>
-It supports the listed claim mods innately. (Refer to [Supported Version])
+It supports the listed claim mods innately. (Refer to [Supported Versions])
 If your server isn't modded and is instead plugin based and running a claims plugin supported by [ClaimMessenger], install the plugin, and it will send you claims as join, leave, or travel to them!<br>
 If you are using an unsupported claims plugin, feel free to request support for it on [ClaimMessenger's Issues Page]!
 
@@ -75,7 +75,7 @@ If you are using an unsupported claims plugin, feel free to request support for 
 [Title]: images/title.png
 [Icon]: images/icon.png
 
-[Supported Version]: #supported-versions
+[Supported Versions]: #supported-versions
 [ClaimMaps]: https://github.com/JustAHuman-xD/ClaimMaps
 [ClaimMessenger]: https://github.com/JustAHuman-xD/ClaimMessenger
 [ClaimMessenger's Issues Page]: https:github.com/JustAHuman-xD/ClaimMessenger/issues
