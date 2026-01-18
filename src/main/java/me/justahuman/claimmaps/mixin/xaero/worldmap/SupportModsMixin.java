@@ -1,6 +1,6 @@
 package me.justahuman.claimmaps.mixin.xaero.worldmap;
 
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
@@ -22,7 +22,7 @@ public class SupportModsMixin {
     public void load(CallbackInfo ci) {
         ClaimManager.onClaimAdded(claim -> updateChunks(claim.worldKey(), claim.chunks()));
         ClaimManager.onClaimRemoved(claim -> updateChunks(claim.worldKey(), claim.chunks()));
-        ClaimManager.onWorldChanged(world -> {
+        ClaimManager.onWorldChanged((world, networkHandler) -> {
             WorldMapSession session = WorldMapSession.getCurrentSession();
             if (session == null || session.getMapProcessor() == null || MinecraftClient.getInstance().world == null) {
                 return;

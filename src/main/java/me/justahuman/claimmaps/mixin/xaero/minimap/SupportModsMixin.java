@@ -1,6 +1,6 @@
 package me.justahuman.claimmaps.mixin.xaero.minimap;
 
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.util.math.ChunkPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,7 +21,7 @@ public class SupportModsMixin {
     public void init(IXaeroMinimap modMain, CallbackInfo ci) {
         ClaimManager.onClaimAdded(claim -> updateChunks(claim.chunks()));
         ClaimManager.onClaimRemoved(claim -> updateChunks(claim.chunks()));
-        ClaimManager.onWorldChanged(world -> {
+        ClaimManager.onWorldChanged((world, networkHandler) -> {
             XaeroMinimapSession minimapSession = XaeroMinimapSession.getCurrentSession();
             if (minimapSession == null || minimapSession.getMinimapProcessor() == null) {
                 return;

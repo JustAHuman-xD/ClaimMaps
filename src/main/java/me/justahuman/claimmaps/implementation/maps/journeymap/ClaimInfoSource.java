@@ -1,9 +1,9 @@
-package me.justahuman.claimmaps.maps.journeymap;
+package me.justahuman.claimmaps.implementation.maps.journeymap;
 
 import journeymap.client.ui.theme.ThemeLabelSource;
 import me.justahuman.claimmaps.ClaimMaps;
-import me.justahuman.claimmaps.claim.Claim;
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.api.claim.Claim;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 

@@ -1,6 +1,6 @@
 package me.justahuman.claimmaps.mixin;
 
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

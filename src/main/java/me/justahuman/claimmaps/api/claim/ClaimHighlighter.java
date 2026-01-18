@@ -1,5 +1,6 @@
-package me.justahuman.claimmaps.claim;
+package me.justahuman.claimmaps.api.claim;
 
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;

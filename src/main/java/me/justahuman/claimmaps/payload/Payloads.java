@@ -2,7 +2,7 @@ package me.justahuman.claimmaps.payload;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import me.justahuman.claimmaps.ClaimMaps;
+import me.justahuman.claimmaps.util.ClaimMapUtils;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -15,7 +15,7 @@ public class Payloads {
     public static final CustomPayload.Id<DeleteClaimPayload> DELETE_CLAIM = newChannel("delete_claim");
 
     public static <P extends CustomPayload> CustomPayload.Id<P> newChannel(String channel) {
-        return new CustomPayload.Id<>(ClaimMaps.id(channel));
+        return new CustomPayload.Id<>(ClaimMapUtils.id(channel));
     }
 
     public static <P extends CustomPayload> PacketCodec<PacketByteBuf, P> newCodec(Function<ByteArrayDataInput, P> decoder) {

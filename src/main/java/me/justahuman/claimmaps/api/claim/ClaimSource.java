@@ -1,4 +1,4 @@
-package me.justahuman.claimmaps.claim;
+package me.justahuman.claimmaps.api.claim;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.ChunkPos;

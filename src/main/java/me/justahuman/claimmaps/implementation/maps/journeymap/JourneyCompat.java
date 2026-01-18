@@ -1,4 +1,4 @@
-package me.justahuman.claimmaps.maps.journeymap;
+package me.justahuman.claimmaps.implementation.maps.journeymap;
 
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
@@ -12,7 +12,7 @@ import journeymap.api.v2.client.util.PolygonHelper;
 import journeymap.api.v2.common.event.MinimapEventRegistry;
 import journeymap.client.ui.theme.ThemeLabelSource;
 import me.justahuman.claimmaps.ClaimMaps;
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

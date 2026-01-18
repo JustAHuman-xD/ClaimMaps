@@ -1,7 +1,9 @@
-package me.justahuman.claimmaps.claim;
+package me.justahuman.claimmaps.implementation.claim;
 
 import com.mojang.authlib.yggdrasil.ProfileResult;
-import me.justahuman.claimmaps.ClaimMaps;
+import me.justahuman.claimmaps.api.claim.Claim;
+import me.justahuman.claimmaps.api.claim.ClaimSource;
+import me.justahuman.claimmaps.util.ClaimMapUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.registry.RegistryKey;
@@ -24,7 +26,7 @@ public class ClaimManager {
     private static Consumer<Claim> onClaimAdded = claim -> {};
     private static Consumer<Claim> onClaimRemoved = claim -> {};
     private static BiConsumer<String, ClientPlayNetworkHandler> onWorldChanged = (oldWorldId, world) -> {
-        currentWorldId = world == null ? null : ClaimMaps.getWorldId(world);
+        currentWorldId = world == null ? null : ClaimMapUtils.getWorldId(world);
     };
 
     public static void registerClaimSource(ClaimSource source) {

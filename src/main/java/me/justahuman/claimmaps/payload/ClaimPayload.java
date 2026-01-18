@@ -1,6 +1,6 @@
 package me.justahuman.claimmaps.payload;
 
-import me.justahuman.claimmaps.claim.Claim;
+import me.justahuman.claimmaps.api.claim.Claim;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;

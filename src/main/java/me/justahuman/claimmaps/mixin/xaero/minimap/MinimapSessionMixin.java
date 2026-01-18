@@ -1,7 +1,7 @@
 package me.justahuman.claimmaps.mixin.xaero.minimap;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import me.justahuman.claimmaps.maps.xaero.minimap.MinimapClaimHighlighter;
+import me.justahuman.claimmaps.implementation.maps.xaero.minimap.MinimapClaimHighlighter;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +16,7 @@ import xaero.hud.module.HudModule;
 public class MinimapSessionMixin {
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lxaero/common/minimap/highlight/HighlighterRegistry;end()V"), remap = false)
     public void addHighlighter(HudMod modMain, HudModule<MinimapSession> _module, ClientPlayNetworkHandler connection, CallbackInfo ci,
-                                @Local HighlighterRegistry highlighterRegistry) {
+                                @Local(name = "highlighterRegistry") HighlighterRegistry highlighterRegistry) {
         highlighterRegistry.register(new MinimapClaimHighlighter(modMain));
     }
 }

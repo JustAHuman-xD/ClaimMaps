@@ -1,11 +1,11 @@
-package me.justahuman.claimmaps.maps.journeymap;
+package me.justahuman.claimmaps.implementation.maps.journeymap;
 
 import journeymap.api.v2.client.display.IOverlayListener;
 import journeymap.api.v2.client.display.PolygonOverlay;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.util.UIState;
-import me.justahuman.claimmaps.claim.Claim;
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.api.claim.Claim;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;

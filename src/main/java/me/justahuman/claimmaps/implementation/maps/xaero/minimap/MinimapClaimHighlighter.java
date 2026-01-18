@@ -1,8 +1,8 @@
-package me.justahuman.claimmaps.maps.xaero.minimap;
+package me.justahuman.claimmaps.implementation.maps.xaero.minimap;
 
-import me.justahuman.claimmaps.claim.Claim;
-import me.justahuman.claimmaps.claim.ClaimHighlighter;
-import me.justahuman.claimmaps.claim.ClaimManager;
+import me.justahuman.claimmaps.api.claim.Claim;
+import me.justahuman.claimmaps.api.claim.ClaimHighlighter;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;

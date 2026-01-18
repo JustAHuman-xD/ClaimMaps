@@ -1,8 +1,9 @@
-package me.justahuman.claimmaps.claim;
+package me.justahuman.claimmaps.api.claim;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import me.justahuman.claimmaps.implementation.claim.ClaimManager;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
